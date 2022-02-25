@@ -22,6 +22,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: msys2/setup-msys2@v2
-        if: matrix.os == 'windows-latest'
+        if: contains(matrix.os, 'windows')
       - name: Run tests with fpm
         run: fpm test --compiler gfortran-10
