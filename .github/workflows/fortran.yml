@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: fortran-lang/setup-fpm@v3
-        if: ${{ contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos') }}
+        if: contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos')
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: msys2/setup-msys2@v2
@@ -35,5 +35,5 @@ jobs:
         shell: msys2 {0}
         run: fpm test
       - name: Run tests with fpm for Unix
-        if: ${{ contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos') }}
+        if: contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos')
         run: fpm test --compiler gfortran-10
