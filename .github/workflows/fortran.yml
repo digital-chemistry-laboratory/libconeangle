@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu, macos]
+        os: [ubuntu, macos, windows]
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}-latest
     steps:
@@ -21,5 +21,7 @@ jobs:
       - uses: fortran-lang/setup-fpm@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: msys2/setup-msys2@v2
+        if: matrix.os == 'windows-latest'
       - name: Run tests with fpm
         run: fpm test --compiler gfortran-10
