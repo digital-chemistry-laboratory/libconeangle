@@ -16,7 +16,5 @@ jobs:
       - uses: fortran-lang/setup-fpm@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      
-      # Runs a single command using the runners shell
       - name: Run tests with fpm
         run: fpm test --compiler gfortran-10
