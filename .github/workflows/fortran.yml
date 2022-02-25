@@ -20,5 +20,5 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run tests with fpm
         env:
-          FC: gfortran-11
-        run: fpm test --compiler gfortran-11
+          FC: gfortran-10
+        run: fpm test --compiler gfortran-10
