@@ -1,0 +1,16 @@
+name = "coneangle"
+version = "0.0.1"
+license = "MIT"
+author = "Kjell Jorner"
+maintainer = "kjell.jorner@gmail.com"
+copyright = "Copyright 2022, Kjell Jorner"
+[build]
+auto-executables = true
+auto-tests = true
+auto-examples = true
+[install]
+library = false
+[dependencies]
+stdlib = { git="https://github.com/fortran-lang/stdlib", branch="stdlib-fpm" }
+[dev-dependencies]
+test-drive = { git="https://github.com/fortran-lang/test-drive" }

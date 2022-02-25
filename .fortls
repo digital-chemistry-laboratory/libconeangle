@@ -1,0 +1,4 @@
+{
+  "source_dirs": ["src", "app"],
+  "ext_source_dirs": ["build/dependencies/stdlib/src", "build/dependencies/test-drive/src"]
+}

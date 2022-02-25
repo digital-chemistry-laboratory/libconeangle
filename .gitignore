@@ -1,0 +1,13 @@
+.vscode
+.mypy_cache
+.pytest_cache
+.nox
+docs
+build
+_build
+_skbuild
+__pycache__
+*.mod
+*.smod
+*.egg-info
+*.dylib
