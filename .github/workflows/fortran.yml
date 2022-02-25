@@ -21,4 +21,4 @@ jobs:
       - name: Run tests with fpm
         env:
           FC: gfortran-11
-        run: fpm test
+        run: fpm test --compiler gfortran-11
