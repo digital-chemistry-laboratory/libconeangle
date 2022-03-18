@@ -150,7 +150,8 @@ contains
           p_0 = (A + B - 2*D)**2 - 4*C**2
 
           roots = solve_quadratic(p_2, p_1, p_0)
-          if (aimag(roots(1)) /= 0 .or. aimag(roots(1)) /= 0) then
+          
+          if (any(abs(aimag(roots)) /= 0)) then
             write (stderr, *) "Complex roots encountered."
             stat = 1
             return

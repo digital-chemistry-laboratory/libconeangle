@@ -56,7 +56,7 @@ contains
     !> Roots
     complex(wp) :: roots(2)
 
-    associate (delta => sqrt(cmplx(b**2 - 4*a*c)))
+    associate (delta => sqrt(cmplx(b**2 - 4*a*c, kind=wp)))
       roots(1) = (-b + delta)/(2*a)
       roots(2) = (-b - delta)/(2*a)
     end associate
