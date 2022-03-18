@@ -1,11 +1,11 @@
 # libconeangle
-Calculates exact ligand cone angles according to the recipe of Allen and co-workers.[^1] This library is not meant as a standalone application but is rather meant for integration into other programs. An example is [ᴍᴏʀғᴇᴜs](https://github.com/kjelljorner/morfeus) by the same author. libconeangle is written in Fortran with a C interface.
+Library for calculating exact ligand cone angles according to the recipe of Allen and co-workers.[^1] This library is not meant as a standalone application but is rather meant for integration into other programs. An example is [ᴍᴏʀғᴇᴜs](https://github.com/kjelljorner/morfeus) by the same author. libconeangle is written in Fortran with a C interface.
 
 ## Installation
 
 ### pip
 
-To install the Python API with the embedded libconeangle shared library you can use pip. You will need a Fortran compiler, e.g., gfortran, to compile the shared library but the whole process is automated via [scikit-build](https://github.com/scikit-build/scikit-build).
+To install the Python API with the embedded libconeangle shared library you can use pip. You will need a Fortran compiler such as gfortran to compile the shared library but the whole process is automated via [scikit-build](https://github.com/scikit-build/scikit-build).
 
 ```shell
 pip install git+https://github.com/kjelljorner/libconeangle
@@ -21,7 +21,7 @@ conda install -c conda-forge libconeangle
 
 ### cmake
 
-The shared library can be built and installed with cmake. 
+The shared library can be built and installed with cmake. An example worklfow is given below where you need to replace $PREFIX with the desired directory.
 
 ```shell
 FC=gfortran cmake -B _build -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_BUILD_TYPE=Release
@@ -31,7 +31,7 @@ cmake --install _build
 
 ### fpm
 
-To use as a dependency in your Fortran project using [fpm](https://github.com/fortran-lang/fpm), add the following to your `fpm.toml`.
+To use as a dependency in your Fortran project with [fpm](https://github.com/fortran-lang/fpm), add the following to your `fpm.toml`.
 
 ```toml
 [dependencies]
@@ -147,5 +147,5 @@ Any published work derived from the use of libconeangle should cite the original
 
 ## References
 
-[^1]: Bilbrey, J. A.; Kazez, A. H.; Locklin, J.; Allen, W. D. Exact Ligand Cone Angles. *Journal of Computational Chemistry* **2013**, *34* (14), 1189–1197. https://doi.org/10.1002/jcc.23217. ↩ ↩
+[^1]: Bilbrey, J. A.; Kazez, A. H.; Locklin, J.; Allen, W. D. Exact Ligand Cone Angles. *Journal of Computational Chemistry* **2013**, *34* (14), 1189–1197. https://doi.org/10.1002/jcc.23217.
 
