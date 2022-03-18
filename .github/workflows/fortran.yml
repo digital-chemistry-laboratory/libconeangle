@@ -22,6 +22,7 @@ jobs:
         if: contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos')
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          fpm-version: 'latest'
       - uses: msys2/setup-msys2@v2
         if: contains(matrix.os, 'windows')
         with:
