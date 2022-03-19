@@ -31,7 +31,12 @@ contains
     character(:), allocatable :: errmsg_f
 
     ! Call subroutine
-    call cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat, errmsg_f)
+    call cone_angle(coordinates, radii, index_metal + 1, alpha, axis, tangent_atoms, stat, errmsg_f)
+
+    ! Convert to zero-indexd tangent atoms
+    where (tangent_atoms > 0)
+      tangent_atoms = tangent_atoms - 1
+    end where
 
     ! Convert error message to C format.
     if (allocated(errmsg_f)) then

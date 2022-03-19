@@ -41,7 +41,7 @@ def cone_angle(
     axis = np.zeros(3)
     tangent_atoms: Array1D = np.zeros(3, dtype=np.int32)
     stat_ = c_int()
-    errmsg = create_string_buffer(100)
+    errmsg_ = create_string_buffer(100)
     n_atoms = c_int(coordinates.shape[0])
 
     # Run libconeangle
@@ -54,7 +54,7 @@ def cone_angle(
         axis,
         tangent_atoms,
         byref(stat_),
-        errmsg,
+        errmsg_,
     )
 
     # Check for non-zero exit code
@@ -62,7 +62,7 @@ def cone_angle(
     if stat != 0:
         raise ValueError(
             f"libconeangle exited with non-zero exit code: {stat}. "
-            f"Error message: {errmsg.value.decode()}"
+            f"Error message: {errmsg_.value.decode()}"
         )
 
     # Take out results

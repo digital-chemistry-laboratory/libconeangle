@@ -14,11 +14,11 @@ def test_PdCO():
         [[0.0, 0.0, -0.52], [0.0, 0.0, 1.76], [0.0, 0.0, 2.86]]
     )
     radii: NDArray[np.float64] = np.array([2.1, 1.7, 1.52])
-    c_angle, axis, tangent_atoms = cone_angle(coordinates, radii, 1)
+    c_angle, axis, tangent_atoms = cone_angle(coordinates, radii, 0)
 
     assert_allclose(c_angle, 96.423, atol=0.001)
     assert_allclose(axis, np.array([0.0, 0.0, 1.0]), atol=0.0001)
-    assert set(tangent_atoms) == set([2])
+    assert set(tangent_atoms) == set([1])
 
 
 def test_PdCO_close():
@@ -28,7 +28,7 @@ def test_PdCO_close():
     )  # Pd atom too close
     radii: NDArray[np.float64] = np.array([2.1, 1.7, 1.52])
     with pytest.raises(ValueError):
-        cone_angle(coordinates, radii, 1)
+        cone_angle(coordinates, radii, 0)
 
 
 def test_PdCO_bounds():
@@ -38,7 +38,7 @@ def test_PdCO_bounds():
     )  # Pd atom too close
     radii: NDArray[np.float64] = np.array([2.1, 1.7, 1.52])
     with pytest.raises(ValueError):
-        cone_angle(coordinates, radii, 0)
+        cone_angle(coordinates, radii, -1)
 
 
 def test_PdCO_mismatch():
@@ -48,7 +48,7 @@ def test_PdCO_mismatch():
     )  # Pd atom too close
     radii: NDArray[np.float64] = np.array([2.1, 1.7])
     with pytest.raises(ValueError):
-        cone_angle(coordinates, radii, 1)
+        cone_angle(coordinates, radii, 0)
 
 
 def test_Pdbpy():
@@ -103,11 +103,11 @@ def test_Pdbpy():
             1.1,
         ]
     )
-    c_angle, axis, tangent_atoms = cone_angle(coordinates, radii, 1)
+    c_angle, axis, tangent_atoms = cone_angle(coordinates, radii, 0)
 
     assert_allclose(c_angle, 190.799, atol=0.001)
     assert_allclose(axis, np.array([0.00200079, 0.99998474, 0.00514848]), atol=0.0001)
-    assert set(tangent_atoms) == set([12, 18])
+    assert set(tangent_atoms) == set([11, 17])
 
 
 def test_PdPMe3():
@@ -133,10 +133,10 @@ def test_PdPMe3():
     radii: NDArray[np.float64] = np.array(
         [2.1, 1.8, 1.7, 1.1, 1.1, 1.1, 1.7, 1.1, 1.1, 1.1, 1.7, 1.1, 1.1, 1.1]
     )
-    c_angle, axis, tangent_atoms = cone_angle(coordinates, radii, 1)
+    c_angle, axis, tangent_atoms = cone_angle(coordinates, radii, 0)
 
     assert_allclose(c_angle, 117.110, atol=0.001)
     assert_allclose(
         axis, np.array([7.89524317e-01, 5.22544038e-05, 6.13719276e-01]), atol=0.0001
     )
-    assert set(tangent_atoms) == set([6, 10, 13])
+    assert set(tangent_atoms) == set([5, 9, 12])
