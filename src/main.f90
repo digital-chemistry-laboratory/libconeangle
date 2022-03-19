@@ -28,7 +28,7 @@ contains
     !> Return code
     integer, intent(out) :: stat
     !> Error message
-    character(:), allocatable :: errmsg
+    character(:), allocatable, intent(out) :: errmsg
 
     real(wp) :: distances(size(radii)), coordinates_centered(3, size(radii)), &
                 axes(3, size(radii)), alphas(size(radii)), center(3)

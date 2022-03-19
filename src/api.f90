@@ -1,6 +1,6 @@
 !> C API
 module coneangle_api
-  use, intrinsic :: iso_c_binding, only: c_double, c_int
+  use, intrinsic :: iso_c_binding, only: c_double, c_int, c_char, c_null_char
   use coneangle_main, only: cone_angle
   implicit none(type, external)
 
@@ -24,8 +24,13 @@ contains
     !> Return code
     integer(c_int), intent(out) :: stat
     !> Error message
-    character(:), allocatable :: errmsg
+    character(:, c_char), allocatable :: errmsg
+    character(:), allocatable :: errmsg_f
 
-    call cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat, errmsg)
+    call cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat, errmsg_f)
+    if (allocated(errmsg_f)) then
+      errmsg = errmsg//c_null_char
+    end if
+
   end subroutine cone_angle_c
 end module coneangle_api

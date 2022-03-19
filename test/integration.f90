@@ -60,8 +60,8 @@ contains
   subroutine test_PdCO_mismatch(error)
     type(error_type), allocatable, intent(out) :: error
 
-    real(wp) :: coordinates(3, 3), radii(2), alpha, axis(3), ref_axis(3)
-    integer :: tangent_atoms(3), ref_tangent_atoms(3), stat, i
+    real(wp) :: coordinates(3, 3), radii(2), alpha, axis(3)
+    integer :: tangent_atoms(3), stat
     character(:), allocatable :: errmsg
 
     ! Run cone angle calculation
@@ -78,8 +78,8 @@ contains
   subroutine test_PdCO_bounds(error)
     type(error_type), allocatable, intent(out) :: error
 
-    real(wp) :: coordinates(3, 3), radii(3), alpha, axis(3), ref_axis(3)
-    integer :: tangent_atoms(3), ref_tangent_atoms(3), stat, i
+    real(wp) :: coordinates(3, 3), radii(3), alpha, axis(3)
+    integer :: tangent_atoms(3), stat
     character(:), allocatable :: errmsg
 
     ! Run cone angle calculation
