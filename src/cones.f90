@@ -272,7 +272,7 @@ contains
     real(wp) :: angle
 
     do concurrent(i=1:size(alphas))
-      if (is_close(alpha, alphas(i))) then
+      if (alpha == alphas(i)) then
         is_inside(i) = .true.
       else
         angle = vector_angle(axis, axes(:, i))

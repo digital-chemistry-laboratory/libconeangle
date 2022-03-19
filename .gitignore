@@ -2,6 +2,8 @@
 .mypy_cache
 .pytest_cache
 .nox
+.fortls
+.coverage
 docs
 build
 _build
