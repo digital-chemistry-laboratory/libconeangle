@@ -38,8 +38,14 @@ contains
     logical, allocatable :: is_inside(:)
 
     ! Validate input
-    if (size(coordinates, dim=1) /= size(radii)) then
-      errmsg = "Mismatch in dimension between coordinates and radii"
+    if (size(coordinates, dim=2) /= size(radii)) then
+      errmsg = "Mismatch in dimension between coordinates and radii."
+      stat = 1
+      return
+    end if
+
+    if (index_metal < lbound(coordinates, dim=2) .or. index_metal > ubound(coordinates, dim=2)) then
+      errmsg = "Metal index out of bounds."
       stat = 1
       return
     end if
@@ -57,7 +63,7 @@ contains
     distances = get_distances(coordinates(:, index_metal), coordinates) - radii
 
     if (any(distances(indices) < 0)) then
-      write (stderr, *) "Atoms within vdW radius of metal atom."
+      errmsg = "Atoms within vdW radius of metal atom."
       stat = 1
       return
     end if

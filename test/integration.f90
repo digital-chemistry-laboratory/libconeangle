@@ -18,7 +18,9 @@ contains
     testsuite = [ &
                 new_unittest("PdCO", test_PdCO), &
                 new_unittest("Pdbpy", test_Pdbpy), &
-                new_unittest("PdPMe3", test_PdPMe3) &
+                new_unittest("PdPMe3", test_PdPMe3), &
+                new_unittest("PdCO_mismatch", test_PdCO_mismatch, should_fail=.true.), &
+                new_unittest("PdCO_bounds", test_PdCO_bounds, should_fail=.true.) &
                 ]
 
   end subroutine collect_suite_integration
@@ -54,6 +56,42 @@ contains
     end do
 
   end subroutine test_PdCO
+
+  subroutine test_PdCO_mismatch(error)
+    type(error_type), allocatable, intent(out) :: error
+
+    real(wp) :: coordinates(3, 3), radii(2), alpha, axis(3), ref_axis(3)
+    integer :: tangent_atoms(3), ref_tangent_atoms(3), stat, i
+    character(:), allocatable :: errmsg
+
+    ! Run cone angle calculation
+    coordinates = reshape([0._wp, 0._wp, -0.52_wp, 0._wp, 0._wp, 1.76_wp, 0._wp, 0._wp, 2.86_wp], [3, 3])
+    radii = [2.1_wp, 1.7_wp]
+    call cone_angle(coordinates, radii, 1, alpha, axis, tangent_atoms, stat, errmsg)
+
+    ! Check stat calculation failed.
+    call check(error, stat, 0)
+    if (allocated(error)) return
+
+  end subroutine test_PdCO_mismatch
+
+  subroutine test_PdCO_bounds(error)
+    type(error_type), allocatable, intent(out) :: error
+
+    real(wp) :: coordinates(3, 3), radii(3), alpha, axis(3), ref_axis(3)
+    integer :: tangent_atoms(3), ref_tangent_atoms(3), stat, i
+    character(:), allocatable :: errmsg
+
+    ! Run cone angle calculation
+    coordinates = reshape([0._wp, 0._wp, -0.52_wp, 0._wp, 0._wp, 1.76_wp, 0._wp, 0._wp, 2.86_wp], [3, 3])
+    radii = [2.1_wp, 1.7_wp, 1.52_wp]
+    call cone_angle(coordinates, radii, 0, alpha, axis, tangent_atoms, stat, errmsg)
+
+    ! Check stat calculation failed.
+    call check(error, stat, 0)
+    if (allocated(error)) return
+
+  end subroutine test_PdCO_bounds
 
   subroutine test_Pdbpy(error)
     type(error_type), allocatable, intent(out) :: error
