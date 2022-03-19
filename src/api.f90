@@ -5,7 +5,8 @@ module coneangle_api
   implicit none(type, external)
 
 contains
-  subroutine cone_angle_c(n_atoms, coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat) bind(c, name="cone_angle")
+  subroutine cone_angle_c(n_atoms, coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat, errmsg) &
+    bind(c, name="cone_angle")
     !! Calculate cone angle, cone axis and tangent atoms
     !> Number of atoms
     integer(c_int), value, intent(in) :: n_atoms
@@ -24,12 +25,20 @@ contains
     !> Return code
     integer(c_int), intent(out) :: stat
     !> Error message
-    character(:, c_char), allocatable :: errmsg
+    character(c_char), intent(out) :: errmsg(*)
+
+    integer :: i
     character(:), allocatable :: errmsg_f
 
+    ! Call subroutine
     call cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat, errmsg_f)
+
+    ! Convert error message to C format.
     if (allocated(errmsg_f)) then
-      errmsg = errmsg//c_null_char
+      do i = 1, len(errmsg_f)
+        errmsg(i) = errmsg_f(i:i)
+      end do
+      errmsg(len(errmsg_f) + 1) = c_null_char
     end if
 
   end subroutine cone_angle_c

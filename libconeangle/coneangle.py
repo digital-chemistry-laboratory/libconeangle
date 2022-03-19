@@ -1,7 +1,7 @@
 """Cone angle code."""
 from __future__ import annotations
 
-from ctypes import byref, c_double, c_int
+from ctypes import byref, c_double, c_int, create_string_buffer
 
 import numpy as np
 
@@ -25,15 +25,23 @@ def cone_angle(
         tangent_atoms: Indices of atoms tangent to cone
 
     Raises:
-        ValueError: If libconeangle exits with non-zero error code
+        ValueError: If libconeangle exits with non-zero error code or if input validation fails.
     """
     # Set up input
     coordinates: Array2D = np.ascontiguousarray(coordinates)
     radii: Array1D = np.ascontiguousarray(radii, dtype=np.float64)
+
+    if len(coordinates) != len(radii):
+        raise ValueError(
+            f"Length of coordinates, {len(coordinates)}, "
+            f"and radii, {len(radii)}, must be the same."
+        )
+
     cone_angle_ = c_double()
     axis = np.zeros(3)
     tangent_atoms: Array1D = np.zeros(3, dtype=np.int32)
     stat_ = c_int()
+    errmsg = create_string_buffer(100)
     n_atoms = c_int(coordinates.shape[0])
 
     # Run libconeangle
@@ -46,12 +54,16 @@ def cone_angle(
         axis,
         tangent_atoms,
         byref(stat_),
+        errmsg,
     )
 
     # Check for non-zero exit code
     stat = int(stat_.value)
     if stat != 0:
-        raise ValueError("libconeangle exited with non-zero exit code: {stat}")
+        raise ValueError(
+            f"libconeangle exited with non-zero exit code: {stat}. "
+            f"Error message: {errmsg.value.decode()}"
+        )
 
     # Take out results
     cone_angle = float(cone_angle_.value)
