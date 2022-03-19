@@ -5,13 +5,13 @@ module coneangle_main
   use coneangle_cones, only: prune_cones, search_1_cones, search_2_cones, search_3_cones, test_inside
   use conenagle_data, only: RAD_TO_DEG
   use coneangle_util, only: get_distances
-  implicit none (type, external)
+  implicit none(type, external)
 
   private
   public :: cone_angle
 
 contains
-  subroutine cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat)
+  subroutine cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat, errmsg)
     !! Calculate cone angle, cone axis and tangent atoms
     !> Coordinates (Å)
     real(wp), intent(in) :: coordinates(:, :)
@@ -27,6 +27,8 @@ contains
     integer, intent(out) :: tangent_atoms(3)
     !> Return code
     integer, intent(out) :: stat
+    !> Error message
+    character(:), allocatable :: errmsg
 
     real(wp) :: distances(size(radii)), coordinates_centered(3, size(radii)), &
                 axes(3, size(radii)), alphas(size(radii)), center(3)
@@ -35,12 +37,19 @@ contains
     logical :: mask(size(radii)), mask_ligand(size(radii))
     logical, allocatable :: is_inside(:)
 
+    ! Validate input
+    if (size(coordinates, dim=1) /= size(radii)) then
+      errmsg = "Mismatch in dimension between coordinates and radii"
+      stat = 1
+      return
+    end if
+
     ! Set up masks
     n_atoms = size(radii)
     mask = .true.
     mask(index_metal) = .false.
     mask_ligand = mask
-    
+
     indices = trueloc(mask)
     indices_ligand = indices
 
@@ -48,7 +57,7 @@ contains
     distances = get_distances(coordinates(:, index_metal), coordinates) - radii
 
     if (any(distances(indices) < 0)) then
-      write(stderr, *) "Atoms within vdW radius of metal atom."
+      write (stderr, *) "Atoms within vdW radius of metal atom."
       stat = 1
       return
     end if
@@ -80,7 +89,7 @@ contains
     if (.not. all(is_inside)) then
       ! Search over three atom cones
       call search_3_cones(alphas(indices), axes(:, indices), &
-        coordinates_centered(:, indices_ligand), alpha, axis, tangent_atoms, stat)
+                          coordinates_centered(:, indices_ligand), alpha, axis, tangent_atoms, stat)
       if (stat /= 0) then
         return
       end if
@@ -95,7 +104,7 @@ contains
     end associate
 
     ! Convert cone angle to degrees
-    alpha = 2 * alpha * RAD_TO_DEG
+    alpha = 2*alpha*RAD_TO_DEG
 
     stat = 0
   end subroutine cone_angle

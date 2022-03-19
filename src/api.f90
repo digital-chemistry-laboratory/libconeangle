@@ -23,7 +23,9 @@ contains
     integer(c_int), intent(out) :: tangent_atoms(3)
     !> Return code
     integer(c_int), intent(out) :: stat
+    !> Error message
+    character(:), allocatable :: errmsg
 
-    call cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat)
+    call cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat, errmsg)
   end subroutine cone_angle_c
 end module coneangle_api
