@@ -95,7 +95,7 @@ contains
     if (.not. all(is_inside)) then
       ! Search over three atom cones
       call search_3_cones(alphas(indices), axes(:, indices), &
-                          coordinates_centered(:, indices_ligand), alpha, axis, tangent_atoms, stat)
+                          coordinates_centered(:, indices_ligand), alpha, axis, tangent_atoms, stat, errmsg)
       if (stat /= 0) then
         return
       end if
