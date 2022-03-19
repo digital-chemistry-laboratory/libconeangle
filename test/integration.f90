@@ -18,7 +18,10 @@ contains
     testsuite = [ &
                 new_unittest("PdCO", test_PdCO), &
                 new_unittest("Pdbpy", test_Pdbpy), &
-                new_unittest("PdPMe3", test_PdPMe3) &
+                new_unittest("PdPMe3", test_PdPMe3), &
+                new_unittest("PdCO_close", test_PdCO_close, should_fail=.true.), &
+                new_unittest("PdCO_mismatch", test_PdCO_mismatch, should_fail=.true.), &
+                new_unittest("PdCO_bounds", test_PdCO_bounds, should_fail=.true.) &
                 ]
 
   end subroutine collect_suite_integration
@@ -28,11 +31,12 @@ contains
 
     real(wp) :: coordinates(3, 3), radii(3), alpha, axis(3), ref_axis(3)
     integer :: tangent_atoms(3), ref_tangent_atoms(3), stat, i
+    character(:), allocatable :: errmsg
 
     ! Run cone angle calculation
     coordinates = reshape([0._wp, 0._wp, -0.52_wp, 0._wp, 0._wp, 1.76_wp, 0._wp, 0._wp, 2.86_wp], [3, 3])
     radii = [2.1_wp, 1.7_wp, 1.52_wp]
-    call cone_angle(coordinates, radii, 1, alpha, axis, tangent_atoms, stat)
+    call cone_angle(coordinates, radii, 1, alpha, axis, tangent_atoms, stat, errmsg)
 
     ! Check cone angle
     call check(error, alpha, 96.423_wp, thr=0.001_wp)
@@ -54,33 +58,88 @@ contains
 
   end subroutine test_PdCO
 
+  subroutine test_PdCO_close(error)
+    type(error_type), allocatable, intent(out) :: error
+
+    real(wp) :: coordinates(3, 3), radii(3), alpha, axis(3)
+    integer :: tangent_atoms(3), stat
+    character(:), allocatable :: errmsg
+
+    ! Run cone angle calculation
+    coordinates = reshape([0._wp, 0._wp, 0.1_wp, 0._wp, 0._wp, 1.76_wp, 0._wp, 0._wp, 2.86_wp], [3, 3])
+    radii = [2.1_wp, 1.7_wp, 1.52_wp]
+    call cone_angle(coordinates, radii, 1, alpha, axis, tangent_atoms, stat, errmsg)
+
+    ! Check stat calculation failed.
+    call check(error, stat, 0)
+    if (allocated(error)) return
+
+  end subroutine test_PdCO_close
+
+  subroutine test_PdCO_mismatch(error)
+    type(error_type), allocatable, intent(out) :: error
+
+    real(wp) :: coordinates(3, 3), radii(2), alpha, axis(3)
+    integer :: tangent_atoms(3), stat
+    character(:), allocatable :: errmsg
+
+    ! Run cone angle calculation
+    coordinates = reshape([0._wp, 0._wp, -0.52_wp, 0._wp, 0._wp, 1.76_wp, 0._wp, 0._wp, 2.86_wp], [3, 3])
+    radii = [2.1_wp, 1.7_wp]
+    call cone_angle(coordinates, radii, 1, alpha, axis, tangent_atoms, stat, errmsg)
+
+    ! Check stat calculation failed.
+    call check(error, stat, 0)
+    if (allocated(error)) return
+
+  end subroutine test_PdCO_mismatch
+
+  subroutine test_PdCO_bounds(error)
+    type(error_type), allocatable, intent(out) :: error
+
+    real(wp) :: coordinates(3, 3), radii(3), alpha, axis(3)
+    integer :: tangent_atoms(3), stat
+    character(:), allocatable :: errmsg
+
+    ! Run cone angle calculation
+    coordinates = reshape([0._wp, 0._wp, -0.52_wp, 0._wp, 0._wp, 1.76_wp, 0._wp, 0._wp, 2.86_wp], [3, 3])
+    radii = [2.1_wp, 1.7_wp, 1.52_wp]
+    call cone_angle(coordinates, radii, 0, alpha, axis, tangent_atoms, stat, errmsg)
+
+    ! Check stat calculation failed.
+    call check(error, stat, 0)
+    if (allocated(error)) return
+
+  end subroutine test_PdCO_bounds
+
   subroutine test_Pdbpy(error)
     type(error_type), allocatable, intent(out) :: error
 
     real(wp) :: coordinates(3, 21), radii(21), alpha, axis(3), ref_axis(3)
     integer :: tangent_atoms(3), ref_tangent_atoms(3), stat, i
+    character(:), allocatable :: errmsg
 
     ! Run cone angle calculation
     coordinates = reshape( &
-                  [-1.899000e-03, -1.846004e+00, -2.007000e-03, -1.343609e+00, &
-                   -8.359200e-02, 4.197960e-01, 1.345137e+00, -8.591400e-02, &
-                   -4.193200e-01, -7.399130e-01, 1.062540e+00, 8.798000e-03, &
-                   -1.473982e+00, 2.183787e+00, -3.961990e-01, -2.865881e+00, &
-                   2.130461e+00, -3.962120e-01, -3.487476e+00, 9.490540e-01, &
-                   1.374000e-02, -2.690562e+00, -1.192190e-01, 4.151720e-01, &
-                   -9.542920e-01, 3.073408e+00, -7.377720e-01, -3.451265e+00, &
-                   2.985788e+00, -7.207940e-01, -4.569174e+00, 8.579540e-01, &
-                   3.831000e-02, -3.135734e+00, -1.043925e+00, 7.700380e-01, &
-                   2.691916e+00, -1.229550e-01, -4.128390e-01, 3.489163e+00, &
-                   9.451910e-01, -1.169700e-02, 2.868283e+00, 2.127761e+00, &
-                   3.960000e-01, 1.476591e+00, 2.182376e+00, 3.941950e-01, &
-                   7.424670e-01, 1.061320e+00, -1.040300e-02, 3.136172e+00, &
-                   -1.048666e+00, -7.660710e-01, 4.570699e+00, 8.531320e-01, &
-                   -3.487800e-02, 3.453586e+00, 2.983188e+00, 7.202120e-01, &
-                   9.563590e-01, 3.072406e+00, 7.338950e-01], [3, 21])
+                  [-1.899000e-03_wp, -1.846004e+00_wp, -2.007000e-03_wp, -1.343609e+00_wp, &
+                   -8.359200e-02_wp, 4.197960e-01_wp, 1.345137e+00_wp, -8.591400e-02_wp, &
+                   -4.193200e-01_wp, -7.399130e-01_wp, 1.062540e+00_wp, 8.798000e-03_wp, &
+                   -1.473982e+00_wp, 2.183787e+00_wp, -3.961990e-01_wp, -2.865881e+00_wp, &
+                   2.130461e+00_wp, -3.962120e-01_wp, -3.487476e+00_wp, 9.490540e-01_wp, &
+                   1.374000e-02_wp, -2.690562e+00_wp, -1.192190e-01_wp, 4.151720e-01_wp, &
+                   -9.542920e-01_wp, 3.073408e+00_wp, -7.377720e-01_wp, -3.451265e+00_wp, &
+                   2.985788e+00_wp, -7.207940e-01_wp, -4.569174e+00_wp, 8.579540e-01_wp, &
+                   3.831000e-02_wp, -3.135734e+00_wp, -1.043925e+00_wp, 7.700380e-01_wp, &
+                   2.691916e+00_wp, -1.229550e-01_wp, -4.128390e-01_wp, 3.489163e+00_wp, &
+                   9.451910e-01_wp, -1.169700e-02_wp, 2.868283e+00_wp, 2.127761e+00_wp, &
+                   3.960000e-01_wp, 1.476591e+00_wp, 2.182376e+00_wp, 3.941950e-01_wp, &
+                   7.424670e-01_wp, 1.061320e+00_wp, -1.040300e-02_wp, 3.136172e+00_wp, &
+                   -1.048666e+00_wp, -7.660710e-01_wp, 4.570699e+00_wp, 8.531320e-01_wp, &
+                   -3.487800e-02_wp, 3.453586e+00_wp, 2.983188e+00_wp, 7.202120e-01_wp, &
+                   9.563590e-01_wp, 3.072406e+00_wp, 7.338950e-01_wp], [3, 21])
     radii = [2.1_wp, 1.55_wp, 1.55_wp, 1.7_wp, 1.7_wp, 1.7_wp, 1.7_wp, 1.7_wp, 1.1_wp, 1.1_wp, 1.1_wp, &
              1.1_wp, 1.7_wp, 1.7_wp, 1.7_wp, 1.7_wp, 1.7_wp, 1.1_wp, 1.1_wp, 1.1_wp, 1.1_wp]
-    call cone_angle(coordinates, radii, 1, alpha, axis, tangent_atoms, stat)
+    call cone_angle(coordinates, radii, 1, alpha, axis, tangent_atoms, stat, errmsg)
 
     ! Check cone angle
     call check(error, alpha, 190.799_wp, thr=0.001_wp)
@@ -102,11 +161,13 @@ contains
       if (allocated(error)) return
     end do
   end subroutine test_Pdbpy
+
   subroutine test_PdPMe3(error)
     type(error_type), allocatable, intent(out) :: error
 
     real(wp) :: coordinates(3, 14), radii(14), alpha, axis(3), ref_axis(3)
     integer :: tangent_atoms(3), ref_tangent_atoms(3), stat, i
+    character(:), allocatable :: errmsg
 
     ! Run cone angle calculation
     coordinates = reshape( &
@@ -122,7 +183,7 @@ contains
                    2.776990e-01_wp, -1.479572e+00_wp, 1.644733e+00_wp, 2.058112e+00_wp, &
                    -1.338384e+00_wp, 1.639153e+00_wp], [3, 14])
     radii = [2.1_wp, 1.8_wp, 1.7_wp, 1.1_wp, 1.1_wp, 1.1_wp, 1.7_wp, 1.1_wp, 1.1_wp, 1.1_wp, 1.7_wp, 1.1_wp, 1.1_wp, 1.1_wp]
-    call cone_angle(coordinates, radii, 1, alpha, axis, tangent_atoms, stat)
+    call cone_angle(coordinates, radii, 1, alpha, axis, tangent_atoms, stat, errmsg)
 
     ! Check cone angle
     call check(error, alpha, 117.110_wp, thr=0.001_wp)

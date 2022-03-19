@@ -1,6 +1,6 @@
 """Interaction with shared library using ctypes."""
 import ctypes
-from ctypes import c_double, c_int, POINTER
+from ctypes import c_char_p, c_double, c_int, POINTER
 import os
 from pathlib import Path
 import sys
@@ -37,4 +37,5 @@ lib.cone_angle.argtypes = [
     ndpointer(dtype=np.float64, ndim=1, flags="C_CONTIGUOUS"),
     ndpointer(dtype=np.int32, ndim=1, flags="C_CONTIGUOUS"),
     POINTER(c_int),
+    c_char_p,
 ]

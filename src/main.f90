@@ -11,7 +11,7 @@ module coneangle_main
   public :: cone_angle
 
 contains
-  subroutine cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat)
+  subroutine cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat, errmsg)
     !! Calculate cone angle, cone axis and tangent atoms
     !> Coordinates (Å)
     real(wp), intent(in) :: coordinates(:, :)
@@ -27,6 +27,8 @@ contains
     integer, intent(out) :: tangent_atoms(3)
     !> Return code
     integer, intent(out) :: stat
+    !> Error message
+    character(:), allocatable, intent(out) :: errmsg
 
     real(wp) :: distances(size(radii)), coordinates_centered(3, size(radii)), &
                 axes(3, size(radii)), alphas(size(radii)), center(3)
@@ -34,6 +36,19 @@ contains
     integer :: n_atoms, indices_ligand(size(radii) - 1), atom_indices(size(radii)), i
     logical :: mask(size(radii)), mask_ligand(size(radii))
     logical, allocatable :: is_inside(:)
+
+    ! Validate input
+    if (size(coordinates, dim=2) /= size(radii)) then
+      errmsg = "Mismatch in dimension between coordinates and radii."
+      stat = 1
+      return
+    end if
+
+    if (index_metal < lbound(coordinates, dim=2) .or. index_metal > ubound(coordinates, dim=2)) then
+      errmsg = "Metal index out of bounds."
+      stat = 1
+      return
+    end if
 
     ! Set up masks
     n_atoms = size(radii)
@@ -48,7 +63,7 @@ contains
     distances = get_distances(coordinates(:, index_metal), coordinates) - radii
 
     if (any(distances(indices) < 0)) then
-      write (stderr, *) "Atoms within vdW radius of metal atom."
+      errmsg = "Atoms within vdW radius of metal atom."
       stat = 1
       return
     end if
@@ -80,7 +95,7 @@ contains
     if (.not. all(is_inside)) then
       ! Search over three atom cones
       call search_3_cones(alphas(indices), axes(:, indices), &
-                          coordinates_centered(:, indices_ligand), alpha, axis, tangent_atoms, stat)
+                          coordinates_centered(:, indices_ligand), alpha, axis, tangent_atoms, stat, errmsg)
       if (stat /= 0) then
         return
       end if

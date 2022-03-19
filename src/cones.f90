@@ -75,7 +75,7 @@ contains
 
   end subroutine search_2_cones
 
-  subroutine search_3_cones(alphas, axes, coordinates, alpha, axis, indices, stat)
+  subroutine search_3_cones(alphas, axes, coordinates, alpha, axis, indices, stat, errmsg)
     !! Search for cones tangent to three atoms
     !> Cone angles
     real(wp), intent(in) :: alphas(:)
@@ -91,6 +91,8 @@ contains
     integer, intent(out) :: indices(3)
     !> Return code
     integer, intent(out) :: stat
+    !> Error message
+    character(:), allocatable, intent(out) :: errmsg
 
     integer :: i, j, k, l, sign_p, n_combinations, i_all, index_min
     integer(int64) :: sort_idx(4)
@@ -150,9 +152,8 @@ contains
           p_0 = (A + B - 2*D)**2 - 4*C**2
 
           roots = solve_quadratic(p_2, p_1, p_0)
-
-          if (any(abs(aimag(roots)) /= 0)) then
-            write (stderr, *) "Complex roots encountered."
+          if (.not. any(is_close(abs(aimag(roots)), 0._wp))) then
+            errmsg = "Complex roots encountered."
             stat = 1
             return
           end if
