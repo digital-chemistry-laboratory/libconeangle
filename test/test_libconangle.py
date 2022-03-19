@@ -21,12 +21,32 @@ def test_PdCO():
     assert set(tangent_atoms) == set([2])
 
 
-def test_PdCO_too_close():
+def test_PdCO_close():
     """Test PdCO with one atom within vdW distance of Pd atom."""
     coordinates: NDArray[np.float64] = np.array(
         [[0.0, 0.0, 0.1], [0.0, 0.0, 1.76], [0.0, 0.0, 2.86]]
     )  # Pd atom too close
     radii: NDArray[np.float64] = np.array([2.1, 1.7, 1.52])
+    with pytest.raises(ValueError):
+        cone_angle(coordinates, radii, 1)
+
+
+def test_PdCO_bounds():
+    """Test PdCO with metal index out of bounds."""
+    coordinates: NDArray[np.float64] = np.array(
+        [[0.0, 0.0, 0.1], [0.0, 0.0, 1.76], [0.0, 0.0, 2.86]]
+    )  # Pd atom too close
+    radii: NDArray[np.float64] = np.array([2.1, 1.7, 1.52])
+    with pytest.raises(ValueError):
+        cone_angle(coordinates, radii, 0)
+
+
+def test_PdCO_mismatch():
+    """Test PdCO with metal index out of bounds."""
+    coordinates: NDArray[np.float64] = np.array(
+        [[0.0, 0.0, 0.1], [0.0, 0.0, 1.76], [0.0, 0.0, 2.86]]
+    )  # Pd atom too close
+    radii: NDArray[np.float64] = np.array([2.1, 1.7])
     with pytest.raises(ValueError):
         cone_angle(coordinates, radii, 1)
 
