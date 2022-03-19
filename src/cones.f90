@@ -150,7 +150,7 @@ contains
           p_0 = (A + B - 2*D)**2 - 4*C**2
 
           roots = solve_quadratic(p_2, p_1, p_0)
-          
+
           if (any(abs(aimag(roots)) /= 0)) then
             write (stderr, *) "Complex roots encountered."
             stat = 1
@@ -194,7 +194,7 @@ contains
     ! Remove cones from which are outside the bounds
     keep_all = (is_close(alphas_all, upper_bound) .or. alphas_all < upper_bound) &
                .and. (is_close(alphas_all, upper_bound) .or. alphas_all > lower_bound)
-   
+
     ! Remove cones which don't contain all atoms
     associate (temp_indices => trueloc(keep_all))
       do concurrent(i=1:size(temp_indices))
@@ -272,13 +272,13 @@ contains
     integer :: i
     real(wp) :: angle
 
-    do concurrent(i = 1: size(alphas))
+    do concurrent(i=1:size(alphas))
       if (alpha == alphas(i)) then
         is_inside(i) = .true.
       else
         angle = vector_angle(axis, axes(:, i))
         is_inside(i) = (alpha > (angle + alphas(i))) .or. is_close(alpha, (angle + alphas(i)))
-      endif 
+      end if
     end do
   end function test_inside
 end module coneangle_cones
