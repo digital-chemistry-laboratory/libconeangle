@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
-project(libconeangle LANGUAGES C Fortran)
+project(libconeangle LANGUAGES Fortran)
 
 # Set flags for Windows compatibility
 set(CMAKE_SHARED_LIBRARY_PREFIX lib)
