@@ -6,7 +6,7 @@ from nox.sessions import Session
 package = "libconeangle"
 nox.options.sessions = "lint", "tests", "mypy"  # default session
 locations = "libconeangle", "test", "noxfile.py"  # Linting locations
-pyversions = ["3.8", "3.9"]
+pyversions = ["3.8", "3.9", "3.10"]
 
 
 # Testing
