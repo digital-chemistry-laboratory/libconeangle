@@ -6,6 +6,7 @@ set(CMAKE_SHARED_LIBRARY_PREFIX lib)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 # Fetch stdlib
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/stdlib/CMakeLists.txt")
   add_subdirectory(stdlib)
 else()

@@ -42,3 +42,7 @@ show_traceback = true
 [[tool.mypy.overrides]]
 module = "numpy.*"
 allow_untyped_calls = true
+
+[tool.cibuildwheel]
+archs = ["auto64"]
+skip = "*-musllinux*"
