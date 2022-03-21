@@ -12,6 +12,9 @@ jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+      CC: gcc-10
+      CXX: g++-10
+      FC: gfortran-10    
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
