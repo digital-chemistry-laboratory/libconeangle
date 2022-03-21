@@ -17,7 +17,7 @@ setup(
     url=URL,
     packages=["libconeangle"],
     python_requires=">=3.8",
-    install_requires=["numpy"],
+    install_requires=["numpy>=1.20"],
     include_package_data=True,
     cmake_args=["-DSKBUILD=ON"],
     license="LGPLv3",
