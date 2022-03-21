@@ -45,4 +45,5 @@ allow_untyped_calls = true
 
 [tool.cibuildwheel]
 archs = ["auto64"]
-skip = "*-musllinux*"
+archs_macos = "x86_64 arm64"
+skip = "pp* *-musllinux*"
