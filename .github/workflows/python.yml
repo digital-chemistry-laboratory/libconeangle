@@ -12,6 +12,10 @@ jobs:
   test:
     name: ${{ matrix.os }} / ${{ matrix.python_version }}
     runs-on: ${{ matrix.os }}-latest
+    env:
+      CC: gcc-10
+      CXX: g++-10
+      FC: gfortran-10
     strategy:
       fail-fast: false
       matrix:
