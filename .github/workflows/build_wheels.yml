@@ -14,8 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest]
-    #        os: [macos-latest, ubuntu-latest]
+        os: [macos-latest, ubuntu-latest]
 
     steps:
       - uses: actions/checkout@v3
@@ -24,10 +23,9 @@ jobs:
         uses: pypa/cibuildwheel@v2.3.1
         env:
           CIBW_BUILD_VERBOSITY: 1
-          # CIBW_ARCHS_MACOS: x86_64 arm64
-          CIBW_ARCHS_MACOS: arm64
+          CIBW_ARCHS_MACOS: x86_64 arm64
           CIBW_ENVIRONMENT_MACOS: CC=clang CXX=clang FC=gfortran-11
-          CIBW_BEFORE_BUILD_MACOS: rm /usr/local/Cellar/gcc/11.2.0_3/lib/gcc/11/libquadmath.0.dylib
+          CIBW_BEFORE_BUILD_MACOS: rm -f /usr/local/Cellar/gcc/11.2.0_3/lib/gcc/11/libquadmath.0.dylib
           CIBW_ARCHS: auto64
           CIBW_SKIP: skip = pp* *-musllinux*
 
