@@ -14,7 +14,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        #os: [macos-latest, ubuntu-latest]
+        os: [windows-latest]
 
     steps:
       - uses: actions/checkout@v3
@@ -25,6 +26,7 @@ jobs:
           CIBW_BUILD_VERBOSITY: 1
           CIBW_ARCHS_MACOS: x86_64
           CIBW_ENVIRONMENT_MACOS: CC=clang CXX=clang FC=gfortran-11
+          CIBW_BEFORE_BUILD_WINDOWS: choco upgrade mingw
           CIBW_ARCHS: auto64
           CIBW_SKIP: skip = pp* *-musllinux*
 

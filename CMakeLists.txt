@@ -37,6 +37,13 @@ target_link_libraries(coneangle fortran_stdlib)
 
 # Install
 if(SKBUILD)
+  # Link statically agaisnt libgfortran and libgcc
+  if(WIN32)
+    if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
+      set(CMAKE_Fortran_FLAGS "-static-libgfortran -static-libgcc" ${CMAKE_Fortran_FLAGS})
+    endif()
+  endif()
+
   message(STATUS "The project is built using scikit-build")
   install(TARGETS coneangle LIBRARY DESTINATION libconeangle ARCHIVE DESTINATION libconeangle RUNTIME DESTINATION libconeangle) 
 else()
