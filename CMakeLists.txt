@@ -7,6 +7,10 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 # Fetch stdlib
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_MAXIMUM_RANK 2)
+set(BUILD_TESTING OFF)
+set(WITH_QP OFF)
+set(WITH_XDP OFF)
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/stdlib/CMakeLists.txt")
   add_subdirectory(stdlib)
 else()
@@ -33,8 +37,13 @@ target_link_libraries(coneangle fortran_stdlib)
 
 # Install
 if(SKBUILD)
+  # Link statically agaisnt libgfortran
+  if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
+    set(CMAKE_Fortran_FLAGS "-static-libgfortran -static-libgcc" ${CMAKE_Fortran_FLAGS})
+  endif()
+
   message(STATUS "The project is built using scikit-build")
-  install(TARGETS coneangle LIBRARY DESTINATION libconeangle ARCHIVE DESTINATION libconeangle RUNTIME DESTINATION libconeangle)
+  install(TARGETS coneangle LIBRARY DESTINATION libconeangle ARCHIVE DESTINATION libconeangle RUNTIME DESTINATION libconeangle) 
 else()
   set_target_properties(coneangle PROPERTIES PUBLIC_HEADER "include/cone_angle.h")
   install(TARGETS coneangle LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR} PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libconeangle)
