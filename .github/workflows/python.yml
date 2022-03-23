@@ -15,18 +15,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu, macos, windows]
-        python_version: ["3.10"]
+        python_version: ["3.8", "3.9", "3.10"]
         include:
           - os: ubuntu
-            python_version: "3.8"
             cc: gcc-10
             cxx: g++-10
-            fc: gfortran-10              
-          - os: ubuntu
-            python_version: "3.9"
-            cc: gcc-10
-            cxx: g++-10
-            fc: gfortran-10    
+            fc: gfortran-10                
           - os: macos
             cc: gcc-11
             cxx: g++-11
@@ -34,7 +28,17 @@ jobs:
           - os: windows
             cc: cl
             cxx: cl
-            fc: gfortran         
+            fc: gfortran
+        exclude:
+          - os: macos
+            python_version: "3.8"
+          - os: macos
+            python_version: "3.9"
+          - os: windows
+            python_version: "3.8"
+          - os: windows
+            python_version: "3.9"
+            
     steps:          
       - uses: actions/checkout@v3
       - name: Update GCC for Windows
@@ -53,4 +57,4 @@ jobs:
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
-          FC: ${{ matrix.fc }}  
+          FC: ${{ matrix.fc }}
