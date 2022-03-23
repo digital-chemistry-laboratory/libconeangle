@@ -14,9 +14,8 @@ pyversions = ["3.8", "3.9", "3.10"]
 def tests(session: Session) -> None:
     """Run tests."""
     args = session.posargs + ["--cov=libconeangle", "--import-mode=importlib", "-s"]
-    session.install("-r", "requirements.txt")
     session.install("pytest", "pytest-cov")
-    session.install("-e", ".", "--no-deps")
+    session.install(".")
     session.run("pytest", *args)
 
 
