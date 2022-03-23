@@ -19,9 +19,11 @@ jobs:
         include:
           - os: ubuntu
             python_version: "3.8"
+            cc: gcc-10
+            cxx: g++-10
+            fc: gfortran-10              
           - os: ubuntu
             python_version: "3.9"
-          - os: ubuntu
             cc: gcc-10
             cxx: g++-10
             fc: gfortran-10    
