@@ -25,7 +25,6 @@ jobs:
           CIBW_ENVIRONMENT_MACOS: CC=clang CXX=clang FC=gfortran-11
           CIBW_BEFORE_BUILD_WINDOWS: choco upgrade mingw
           CIBW_ARCHS: auto64
-          CIBW_BUILD: cp39-*
           CIBW_SKIP: skip = pp* *-musllinux*
 
       - uses: actions/upload-artifact@v3

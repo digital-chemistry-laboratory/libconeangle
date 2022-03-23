@@ -1,6 +1,6 @@
 from skbuild import setup
 
-URL = ""
+URL = "https://github.com/kjelljorner/libconeangle"
 DESCRIPTION = "Python library for libconeangle"
 LONG_DESCRIPTION = f"""\
 {DESCRIPTION}. For more information, see the [project repository]({URL}).

@@ -15,7 +15,6 @@ name = "libconeangle"
 winmode: Optional[int] = None
 if sys.platform == "win32":
     name = f"{name}.dll"
-    print(path)
     os.add_dll_directory(path)
     winmode = 0
 elif sys.platform.startswith("linux"):
