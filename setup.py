@@ -20,10 +20,10 @@ setup(
     install_requires=["numpy>=1.20"],
     include_package_data=True,
     cmake_args=["-DSKBUILD=ON"],
-    license="LGPLv3",
+    license="MIT",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
 )
