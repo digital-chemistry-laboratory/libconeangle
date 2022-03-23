@@ -37,7 +37,7 @@ target_link_libraries(coneangle fortran_stdlib)
 
 # Install
 if(SKBUILD)
-  # Link statically against libgfortran and libgcc
+  # Link statically against dependencies for Windows
   if(WIN32)
     if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
       set(CMAKE_Fortran_FLAGS "-static" ${CMAKE_Fortran_FLAGS})
