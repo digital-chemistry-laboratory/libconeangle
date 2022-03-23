@@ -21,7 +21,6 @@ jobs:
             python_version: "3.8"
           - os: ubuntu
             python_version: "3.9"
-        include:
           - os: ubuntu
             cc: gcc-10
             cxx: g++-10
