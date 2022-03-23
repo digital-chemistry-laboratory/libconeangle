@@ -45,6 +45,6 @@ jobs:
       - name: Run `nox -s tests`     
         run: python -m nox -s tests-${{ matrix.python_version }} -v       
         env:
-          CC: gcc-${{ matrix.gcc_v }}
-          CXX: g++-${{ matrix.gcc_v }}
-          FC: gfortran-${{ matrix.gcc_v }}  
+          CC: gcc${{ matrix.gcc_v }}
+          CXX: g++${{ matrix.gcc_v }}
+          FC: gfortran${{ matrix.gcc_v }}  
