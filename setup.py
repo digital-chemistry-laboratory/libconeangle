@@ -1,6 +1,6 @@
 from skbuild import setup
 
-URL = ""
+URL = "https://github.com/kjelljorner/libconeangle"
 DESCRIPTION = "Python library for libconeangle"
 LONG_DESCRIPTION = f"""\
 {DESCRIPTION}. For more information, see the [project repository]({URL}).
@@ -8,7 +8,7 @@ LONG_DESCRIPTION = f"""\
 
 setup(
     name="libconeangle",
-    version="0.0.1",
+    version="0.0.2",
     author="Kjell Jorner",
     author_email="kjell.jorner@gmail.com",
     description=DESCRIPTION,
@@ -20,10 +20,10 @@ setup(
     install_requires=["numpy>=1.20"],
     include_package_data=True,
     cmake_args=["-DSKBUILD=ON"],
-    license="LGPLv3",
+    license="MIT",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
 )

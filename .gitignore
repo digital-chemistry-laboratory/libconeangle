@@ -13,3 +13,5 @@ __pycache__
 *.smod
 *.egg-info
 *.dylib
+wheelhouse
+dist
