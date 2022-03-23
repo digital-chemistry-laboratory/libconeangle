@@ -24,11 +24,11 @@ jobs:
 #            python_version: "3.9"
         include:
 #          - os: ubuntu
-#            gcc_v: 10
+#            gcc_v: "-10"
 #          - os: macos
-#            gcc_v: 10
+#            gcc_v: "-10"
           - os: windows
-            gcc_v: 11         
+            gcc_v: ""         
     steps:          
       - uses: actions/checkout@v3
       - name: Update GCC for Windows
@@ -43,7 +43,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --upgrade nox          
       - name: Run `nox -s tests`     
-        run: python -m nox -s tests-${{ matrix.python_version }}          
+        run: python -m nox -s tests-${{ matrix.python_version }} -v       
         env:
           CC: gcc-${{ matrix.gcc_v }}
           CXX: g++-${{ matrix.gcc_v }}
