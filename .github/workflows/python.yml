@@ -2,10 +2,10 @@ name: Python test
 
 on:
   push:
-    branches: [ci_python_windows]
-#  pull_request:
-#    branches:
-#      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
       
 jobs:
   test:
@@ -14,19 +14,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-#        os: [ubuntu, macos]
-        os: [windows]
+        os: [ubuntu, macos, windows]
         python_version: ["3.10"]
-#        include:
-#          - os: ubuntu
-#            python_version: "3.8"
-#          - os: ubuntu
-#            python_version: "3.9"
         include:
-#          - os: ubuntu
-#            gcc_v: "-10"
-#          - os: macos
-#            gcc_v: "-10"
+          - os: ubuntu
+            python_version: "3.8"
+          - os: ubuntu
+            python_version: "3.9"
+        include:
+          - os: ubuntu
+            cc: gcc-10
+            cxx: g++-10
+            fc: gfortran-10    
+          - os: macos
+            cc: gcc-11
+            cxx: g++-11
+            fc: gfortran-11
           - os: windows
             cc: cl
             cxx: cl
@@ -45,7 +48,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --upgrade nox          
       - name: Run `nox -s tests`     
-        run: python -m nox -s tests-${{ matrix.python_version }} -v       
+        run: python -m nox -s tests-${{ matrix.python_version }}       
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
