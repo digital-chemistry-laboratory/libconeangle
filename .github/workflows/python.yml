@@ -28,7 +28,9 @@ jobs:
 #          - os: macos
 #            gcc_v: "-10"
           - os: windows
-            gcc_v: ""         
+            cc: cl
+            cxx: cl
+            fc: gfortran         
     steps:          
       - uses: actions/checkout@v3
       - name: Update GCC for Windows
@@ -45,6 +47,6 @@ jobs:
       - name: Run `nox -s tests`     
         run: python -m nox -s tests-${{ matrix.python_version }} -v       
         env:
-          CC: gcc${{ matrix.gcc_v }}
-          CXX: g++${{ matrix.gcc_v }}
-          FC: gfortran${{ matrix.gcc_v }}  
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+          FC: ${{ matrix.fc }}  
