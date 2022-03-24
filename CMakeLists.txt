@@ -38,7 +38,7 @@ if(SKBUILD)
     
     # Link statically against dependencies for Windows
     if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-      target_compile_options(coneangle PRIVATE "-static")
+      target_link_options(coneangle PRIVATE "-static")
     endif()
   endif()
 
