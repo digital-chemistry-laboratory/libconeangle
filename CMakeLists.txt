@@ -34,7 +34,7 @@ if(SKBUILD)
   if(WIN32)
     # Set flags for Windows compatibility
     set_target_properties(coneangle PROPERTIES LIBRARY_PREFIX "lib")
-    set_target_properties(coneangle WINDOWS_EXPORT_ALL_SYMBOLS ON)
+    set_target_properties(coneangle PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
     
     # Link statically against dependencies for Windows
     if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
