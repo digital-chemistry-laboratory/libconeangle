@@ -7,21 +7,28 @@ set(BUILD_TESTING OFF)
 set(WITH_QP OFF)
 set(WITH_XDP OFF)
 
-set(stdlib-url "https://github.com/fortran-lang/stdlib")
-message(STATUS "Retrieving stdlib from ${stdlib-url}")
-include(FetchContent)
-FetchContent_Declare(
-  stdlib
-  GIT_REPOSITORY ${stdlib-url}
-  GIT_TAG "HEAD"
-)
-FetchContent_MakeAvailable(stdlib)
-
-# Set compiler flags
-set_target_properties(fortran_stdlib PROPERTIES POSITION_INDEPENDENT_CODE ON)
-if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 10)
-  target_compile_options(fortran_stdlib PRIVATE "-fno-range-check")
-endif()
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/stdlib/CMakeLists.txt")
+   add_subdirectory(stdlib)
+ else()
+   set(stdlib-url "https://github.com/fortran-lang/stdlib")
+   message(STATUS "Retrieving stdlib from ${stdlib-url}")
+   include(FetchContent)
+   FetchContent_Declare(
+     fortran_stdlib
+     GIT_REPOSITORY ${stdlib-url}
+     GIT_TAG "HEAD"
+   )
+   FetchContent_GetProperties(fortran_stdlib)
+   if(NOT fortran_stdlib_POPULATED)
+     FetchContent_Populate(fortran_stdlib)
+     add_subdirectory(${fortran_stdlib_SOURCE_DIR} ${fortran_stdlib_BINARY_DIR} EXCLUDE_FROM_ALL)
+   endif()
+  # Set compiler flags
+  set_target_properties(fortran_stdlib PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 10)
+    target_compile_options(fortran_stdlib PRIVATE "-fno-range-check")
+  endif()
+ endif()
 
 # Set up shared library target
 set(srcs)
