@@ -1,4 +1,5 @@
 # libconeangle
+
 Library for calculating exact ligand cone angles according to the recipe of Allen and co-workers.[^1] This library is not meant as a standalone application but is rather meant for integration into other programs. An example is [ᴍᴏʀғᴇᴜs](https://github.com/kjelljorner/morfeus) by the same author. libconeangle is written in Fortran with a C interface.
 
 ## Installation
