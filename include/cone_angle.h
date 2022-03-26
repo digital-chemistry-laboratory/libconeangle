@@ -6,5 +6,5 @@ void cone_angle(
 	double *alpha,
 	double *normal,
 	int *tangent_atoms,
-	int *stat
-	);
+	int *stat,
+	char *errmsg);

@@ -1,12 +1,24 @@
 # libconeangle
 
-Library for calculating exact ligand cone angles according to the recipe of Allen and co-workers.[^1] This library is not meant as a standalone application but is rather meant for integration into other programs. An example is [ᴍᴏʀғᴇᴜs](https://github.com/kjelljorner/morfeus) by the same author. libconeangle is written in Fortran with a C interface.
+![PyPI - License](https://img.shields.io/pypi/l/libconeangle)
+[![PyPI](https://img.shields.io/pypi/v/libconeangle)](https://pypi.org/project/libconeangle/)
+[![Conda (channel only)](https://img.shields.io/conda/vn/conda-forge/libconeangle)](https://anaconda.org/conda-forge/libconeangle)
+![Python requires](https://img.shields.io/badge/dynamic/json?query=info.requires_python&label=python&url=https%3A%2F%2Fpypi.org%2Fpypi%2Flibconeangle%2Fjson)
+
+Library for calculating exact ligand cone angles according to the recipe of Allen and co-workers.[^1] This library is not meant as a standalone application but is rather for integration into other programs. An example is [ᴍᴏʀғᴇᴜs](https://github.com/kjelljorner/morfeus) by the same author. libconeangle is written in Fortran with a C interface.
 
 ## Installation
 
 ### pip
 
-To install the Python API with the embedded libconeangle shared library you can use pip. You will need a Fortran compiler such as gfortran to compile the shared library but the whole process is automated via [scikit-build](https://github.com/scikit-build/scikit-build).
+To install the Python API with the embedded libconeangle shared library you can use pip.
+
+```shell
+pip install libconeangle
+```
+
+It is also possible to install directly from the GitHub repository.
+You will need a Fortran compiler such as GFortran to compile the shared library but the whole process is automated via [scikit-build](https://github.com/scikit-build/scikit-build).
 
 ```shell
 pip install git+https://github.com/kjelljorner/libconeangle
@@ -68,7 +80,7 @@ The Fortran API exposes the function `cone_angle` with the follow signature.
 > ⚠️ All atoms are one-index in the Fortran API.
 
 ```fortran
-subroutine cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat)
+subroutine cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat, errmsg)
   !! Calculate cone angle, cone axis and tangent atoms
   !> Coordinates (Å)
   real(wp), intent(in) :: coordinates(:, :)
@@ -84,7 +96,8 @@ subroutine cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atom
   integer, intent(out) :: tangent_atoms(3)
   !> Return code
   integer, intent(out) :: stat
-  
+  !> Error message
+  character(:), allocatable, intent(out) :: errmsg
   ...
   
 end subroutine cone_angle
@@ -112,7 +125,7 @@ end program demo
 
 The `tangent_atoms` array has three elements. In the case of cones tangent to only one or two atoms, the rest of the elements are padded with zeros. In the case of an unsuccessful calculation, the return code `stat` will be non-zero and an error message is stored in `errmsg`.
 
-A minimal [FORD](https://github.com/Fortran-FOSS-Programmers/ford) documentation can be built with `ford pages.md`
+A minimal [FORD](https://github.com/Fortran-FOSS-Programmers/ford) documentation can be built from `pages.md`
 
 ### C API
 
@@ -121,7 +134,8 @@ The C API exposes the subroutine `cone_angle_c` with the C name `cone_angle`. It
 > ⚠️ All atoms are zero-index in the C API.
 
 ```fortran
-subroutine cone_angle_c(n_atoms, coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat) bind(c, name="cone_angle")
+subroutine cone_angle_c(n_atoms, coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat, errmsg) &
+  bind(c, name="cone_angle")
   !! Calculate cone angle, cone axis and tangent atoms
   !> Number of atoms
   integer(c_int), value, intent(in) :: n_atoms
@@ -142,7 +156,8 @@ subroutine cone_angle_c(n_atoms, coordinates, radii, index_metal, alpha, axis, t
   !> Error message
   character(c_char), intent(out) :: errmsg(*)
   
-  call cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat)
+  ...
+
 end subroutine cone_angle_c
 ```
 
