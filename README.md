@@ -4,6 +4,7 @@
 [![PyPI](https://img.shields.io/pypi/v/libconeangle)](https://pypi.org/project/libconeangle/)
 [![Conda (channel only)](https://img.shields.io/conda/vn/conda-forge/libconeangle)](https://anaconda.org/conda-forge/libconeangle)
 ![Python requires](https://img.shields.io/badge/dynamic/json?query=info.requires_python&label=python&url=https%3A%2F%2Fpypi.org%2Fpypi%2Flibconeangle%2Fjson)
+[![DOI](https://zenodo.org/badge/463367509.svg)](https://zenodo.org/badge/latestdoi/463367509)
 
 Library for calculating exact ligand cone angles according to the recipe of Allen and co-workers.[^1] This library is not meant as a standalone application but is rather for integration into other programs. An example is [ᴍᴏʀғᴇᴜs](https://github.com/kjelljorner/morfeus) by the same author. libconeangle is written in Fortran with a C interface.
 
