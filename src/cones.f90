@@ -205,6 +205,12 @@ contains
     end associate
 
     index_min = minloc(alphas_all, dim=1, mask=keep_all)
+    if (index_min == 0) then
+      errmsg = "No three-atom cone found."
+      stat = 1
+      return
+    end if
+
     alpha = alphas_all(index_min)
     axis = axes_all(:, index_min)
     indices = indices_all(:, index_min)
