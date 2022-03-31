@@ -25,9 +25,6 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/stdlib/CMakeLists.txt")
    endif()
   # Set compiler flags
   set_target_properties(fortran_stdlib PROPERTIES POSITION_INDEPENDENT_CODE ON)
-  if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 10)
-    target_compile_options(fortran_stdlib PRIVATE "-fno-range-check")
-  endif()
  endif()
 
 # Set up shared library target
