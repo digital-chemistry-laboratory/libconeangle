@@ -81,7 +81,7 @@ MIT license further allows wide adoptation.
 The original recipe for calculating cone angles by Tolman is incorporated into
 various software packages, for example in Aarontools.py [@aarontools; @ingman_2021].
 Tolman's definition was developed with phosphine ligands in mind and suffers
-from a number of problems. To adress these shortcomings, Allen and co-workers
+from a number of problems. To address these shortcomings, Allen and co-workers
 introduced the exact ligand cone angles in 2013 [@bilbrey_2013].
 
 `libconeangle` provides the `cone_angle` Fortran subroutine to calculate the
@@ -139,10 +139,10 @@ installation with the `conda` package manager.
 > ⚠️ UPDATE when the conda-forge recipe is cleared.
 
 The Python API exposes the single function `cone_angle` that can be used
-directly from `libconeangle`, or preferably, through some higher-level library
-that also includes functions for reading ligand structures files and the
-associated van der Waals radii. In fact, `MORFEUS` now calculates exact ligand
-cone angles using `libconeangle` by default.
+directly, or preferably, through some higher-level library that also includes
+functions for reading ligand structure files and their associated van der Waals
+radii. In fact, `MORFEUS` now calculates exact ligand cone angles using
+`libconeangle` as backend.
 
 ```python
 from libconeangle import cone_angle
