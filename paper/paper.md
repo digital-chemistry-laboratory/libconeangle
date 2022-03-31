@@ -55,24 +55,26 @@ calculations.
 
 Implementations of exact ligand cone angles include the original Mathematica
 version by Allen and co-workers and two Python implementations by Jorner *et al.* 
-in `MORFEUS`(MIT license) [@morfeus], and Wheeler and co-workers in
+in `MORFEUS` (MIT license) [@morfeus], and Wheeler and co-workers in
 `AaronTools.py` (GPL license) [@aarontools; @ingman_2021]. The Mathematica
 version requires proprietary software to run, while the Python versions are slow
 for large ligands and restricted to the Python ecosystem. For example, the
-calculation of the AdBrettPhos ligand with `XX` heavy atoms takes ca 7 seconds
-on a modern laptop computer with `MORFEUS`. This calculation needs to be repeated
-for each of the `XXX` low-lying conformers, leading to a total computational
-time of XX seconds (single-core) to fully parametrize the ligand. To generate
-libraries with thousands of ligands, the computational cost becomes significant.
+calculation of the AdBrettPhos ligand with 114 atoms takes 10.9 seconds
+on a single core on a modern laptop computer with `MORFEUS`. This calculation
+needs to be repeated for each of the 548 conformers within an energy of 3.0
+kcal/mol identified by a conformational search, leading to a total computational
+time of ca 1.7 core hours to fully parametrize the ligand. To generate libraries
+with thousands of ligands, the computational cost becomes significant.
 
 We have written `libconeangle` as a fast reference implementation of the exact
-ligand cone angle algorithm. A calculation of AdBrettPhos takes ca 40
-milliseconds instead of 7 seconds. `libconeangle` is written in Modern Fortran,
-with a C API that allows access from any language with a C Foreign Function
-Interface (CFFI). A Python API is packaged for installation via `pip` and
-`conda`, and it would be straightforward to package also for other languages
-such as with [BinaryBuilder](https://binarybuilder.org) for Julia. The MIT
-license further allows wide adoptation.
+ligand cone angle algorithm. A calculation of AdBrettPhos takes ca 53
+milliseconds instead of 10.9 seconds. Calculation of the 548 conformers then
+takes 29 core seconds instead of 1.7 core hours. `libconeangle` is written in
+Modern Fortran, with a C API that allows access from any language with a C
+Foreign Function Interface (CFFI). A Python API is packaged for installation via
+`pip` and `conda`, and it would be straightforward to package also for other
+languages such as with [BinaryBuilder](https://binarybuilder.org) for Julia. The
+MIT license further allows wide adoptation.
 
 # Features and implementation
 
@@ -86,7 +88,8 @@ introduced the exact ligand cone angles in 2013 [@bilbrey_2013].
 exact ligand cone angle with following signature.
 
 ```fortran
-subroutine cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat, errmsg)
+subroutine cone_angle(coordinates, radii, index_metal, alpha, axis, &
+  tangent_atoms, stat, errmsg)
   !! Calculate cone angle, cone axis and tangent atoms
   !> Coordinates (Å)
   real(wp), intent(in) :: coordinates(:, :)
@@ -142,17 +145,17 @@ associated van der Waals radii. In fact, `MORFEUS` now calculates exact ligand
 cone angles using `libconeangle` by default.
 
 ```python
->>> from libconeangle import cone_angle
->>> coordinates =  np.array([[0.0, 0.0, -0.52], [0.0, 0.0, 1.76], [0.0, 0.0, 2.86]])
->>> radii = np.array([2.1, 1.7, 1.52])
->>> index_metal = 0 # Zero-indexed
->>> angle, axis, tangent_atoms = cone_angle(coordinates, radii, index_metal)
->>> angle
-96.4237340645161
->>> axis
-array([0., 0., 1.])
->>> tangent_atoms # Also zero-indexed
-[1]
+from libconeangle import cone_angle
+coordinates =  np.array([[0.0, 0.0, -0.52], [0.0, 0.0, 1.76], [0.0, 0.0, 2.86]])
+radii = np.array([2.1, 1.7, 1.52])
+index_metal = 0 # Zero-indexed
+angle, axis, tangent_atoms = cone_angle(coordinates, radii, index_metal)
+angle
+# 96.4237340645161
+axis
+# array([0., 0., 1.])
+tangent_atoms # Also zero-indexed
+# [1]
 ```
 
 Under the hood, the Python API uses
