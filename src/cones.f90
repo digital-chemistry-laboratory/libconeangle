@@ -81,9 +81,9 @@ contains
     real(wp), intent(in) :: alphas(:)
     !> Cone axes
     real(wp), intent(in) :: axes(:, :)
-    !> Coordinates of ligand
+    !> Coordinates of ligand (shape: 3, number of cones)
     real(wp), intent(in) :: coordinates(:, :)
-    !> Angle of found cone
+    !> Angle of found cone (shape: 3, number of atoms)
     real(wp), intent(inout) :: alpha
     !> Axis of found cone
     real(wp), intent(out) :: axis(3)
@@ -221,11 +221,11 @@ contains
     !! Calculate upper bound for cone angle tangent to three atoms
     !> Cone angles
     real(wp), intent(in) :: alphas(:)
-    !> Coordinates of ligand
+    !> Coordinates of ligand (shape: 3, number of atoms)
     real(wp), intent(in) :: axes(:, :)
-    !> Upper bound
+    !> Cone axes (shape: 3, number of cones)
     real(wp), intent(in) :: coordinates(:, :)
-    !> Cone axes
+    !> Upper bound
     real(wp) :: upper_bound
 
     real(wp) :: centroid_vector(3), vertex_angle, angle_sums(size(alphas))
@@ -245,7 +245,7 @@ contains
     !! Returns mask of cones that are inside other cones
     !> Cone angles
     real(wp), intent(in) :: alphas(:)
-    !> Cone axes
+    !> Cone axes (shape: 3, number of cones)
     real(wp), intent(in) :: axes(:, :)
     !> Mask of cones inside another cone
     logical :: is_inside(size(alphas))

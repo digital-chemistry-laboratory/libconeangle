@@ -83,7 +83,7 @@ The Fortran API exposes the function `cone_angle` with the follow signature.
 ```fortran
 subroutine cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat, errmsg)
   !! Calculate cone angle, cone axis and tangent atoms
-  !> Coordinates (Å)
+  !> Coordinates (Å) (shape: 3, number of atoms)
   real(wp), intent(in) :: coordinates(:, :)
   !> vdW radii (Å)
   real(wp), intent(in) :: radii(:)

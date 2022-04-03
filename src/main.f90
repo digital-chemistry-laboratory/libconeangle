@@ -13,7 +13,7 @@ module coneangle_main
 contains
   subroutine cone_angle(coordinates, radii, index_metal, alpha, axis, tangent_atoms, stat, errmsg)
     !! Calculate cone angle, cone axis and tangent atoms
-    !> Coordinates (Å)
+    !> Coordinates (Å) (shape: 3, number of atoms)
     real(wp), intent(in) :: coordinates(:, :)
     !> vdW radii (Å)
     real(wp), intent(in) :: radii(:)
