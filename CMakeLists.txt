@@ -23,9 +23,7 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/stdlib/CMakeLists.txt")
      FetchContent_Populate(fortran_stdlib)
      add_subdirectory(${fortran_stdlib_SOURCE_DIR} ${fortran_stdlib_BINARY_DIR} EXCLUDE_FROM_ALL)
    endif()
-  # Set compiler flags
-  set_target_properties(fortran_stdlib PROPERTIES POSITION_INDEPENDENT_CODE ON)
- endif()
+endif()
 
 # Set up shared library target
 set(srcs)
