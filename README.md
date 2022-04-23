@@ -62,6 +62,7 @@ There is only one function: `cone_angle`. An example is given below for PdCO.
 
 ```python
 >>> from libconeangle import cone_angle
+>>> import numpy as np
 >>> coordinates =  np.array([[0.0, 0.0, -0.52], [0.0, 0.0, 1.76], [0.0, 0.0, 2.86]])
 >>> radii = np.array([2.1, 1.7, 1.52])
 >>> index_metal = 0 # Zero-indexed
