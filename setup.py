@@ -8,7 +8,7 @@ LONG_DESCRIPTION = f"""\
 
 setup(
     name="libconeangle",
-    version="0.1.1",
+    version="0.1.2",
     author="Kjell Jorner",
     author_email="kjell.jorner@gmail.com",
     description=DESCRIPTION,
